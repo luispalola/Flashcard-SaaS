@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { useUser } from "@clerk/nextjs";
-import { Container, Typography, Box, Button, CircularProgress } from "@mui/material";
+import { Container, Typography, Box, Grid, Card, CardActionArea, CardContent, CircularProgress, IconButton, AppBar, Toolbar } from "@mui/material";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Head from "next/head";
 import { collection, doc, getDoc } from "firebase/firestore";
 import { db } from "@/firebase";
@@ -29,8 +30,11 @@ export default function MatchSelect() {
   }, [user, isLoaded]);
 
   const handleSelectSet = (setName) => {
-    // Navigate to the match game with the selected flashcard set
-    router.push(`/games/match/${setName}`);
+    router.push(`/match/${setName}`);
+  };
+
+  const handleBack = () => {
+    router.push('/');
   };
 
   if (loading) {
@@ -48,6 +52,19 @@ export default function MatchSelect() {
         <meta name="description" content="Play the Match game with your flashcards"/>
       </Head>
 
+      {/* AppBar with "Match" Title and Back Button */}
+      <AppBar position="static">
+        <Toolbar sx={{ justifyContent: 'space-between' }}>
+          <IconButton edge="start" color="inherit" onClick={handleBack}>
+            <ArrowBackIcon />
+          </IconButton>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1, textAlign: 'center' }}>
+            Match
+          </Typography>
+          <Box sx={{ width: 48 }} /> {/* Empty box to balance the space on the right */}
+        </Toolbar>
+      </AppBar>
+
       <Box 
         sx={{
           textAlign: 'center', 
@@ -58,30 +75,31 @@ export default function MatchSelect() {
           justifyContent: 'center',
           minHeight: '70vh'
         }}>
+        
         <Typography variant="h2" gutterBottom>Match Game</Typography>
         <Typography variant="h5" sx={{mb: 4}}>
           Select a flashcard set to start the game:
         </Typography>
 
-        {flashcardSets.length === 0 ? (
-          <Typography variant="h6">No flashcard sets found. Please create some first.</Typography>
-          // Consider adding a button to create a new flashcard set if none exist
-          // <Button variant="contained" color="secondary" onClick={() => router.push('/path/to/create')}>
-          //   Create New Flashcard Set
-          // </Button>
-        ) : (
-          flashcardSets.map((set, index) => (
-            <Button
-              key={index}
-              variant="contained"
-              color="primary"
-              sx={{ mb: 2, width: '200px' }}
-              onClick={() => handleSelectSet(set.name)}
-            >
-              {set.name}
-            </Button>
-          ))
-        )}
+        <Grid container spacing={3} justifyContent="center">
+          {flashcardSets.length === 0 ? (
+            <Typography variant="h6">No flashcard sets found. Please create some first.</Typography>
+          ) : (
+            flashcardSets.map((set, index) => (
+              <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+                <Card>
+                  <CardActionArea onClick={() => handleSelectSet(set.name)}>
+                    <CardContent>
+                      <Typography variant="h6" component="div">
+                        {set.name}
+                      </Typography>
+                    </CardContent>
+                  </CardActionArea>
+                </Card>
+              </Grid>
+            ))
+          )}
+        </Grid>
       </Box>
     </Container>
   );

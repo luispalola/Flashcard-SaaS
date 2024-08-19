@@ -9,7 +9,6 @@ import { useUser } from '@clerk/nextjs';
 import { Global } from '@emotion/react';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
-import { ArrowLeft } from '@mui/icons-material';
 
 export default function MatchGame() {
   const params = useParams();
@@ -208,7 +207,7 @@ export default function MatchGame() {
               },
             },
           }}
-          onClick={() => window.location.href = '/games/match'}
+          onClick={() => window.location.href = '/match'}
         >
           <ArrowLeftIcon sx={{ mr: 0.5 }} />
           <Typography

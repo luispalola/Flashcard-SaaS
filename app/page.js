@@ -44,7 +44,8 @@ export default function Home() {
           </Typography>
 
           {/* New Link to Games Page - Start */}
-          <Button color="inherit" href="/games">Games</Button>
+          <Button color="inherit" href="/match">Match</Button>
+          <Button color="inherit" href="/test">Test</Button>
           {/* New Link to Games Page - End */}
 
           <SignedOut>
